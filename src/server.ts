@@ -1,13 +1,19 @@
 import express from "express";
+import getRovers from "./getRovers";
 
 const app = express();
 const port = 8000;
 
 app.use(express.json());
 const router = express.Router();
+
 router.get('/test', (req, res) => {
     res.send('Hello world !')
 });
+router.get('/rovers', async (req, res) => {
+    res.send(await getRovers())
+});
+
 app.use('/', router);
 
 app.listen(port, () => {
