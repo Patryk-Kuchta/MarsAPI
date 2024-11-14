@@ -1,9 +1,11 @@
+import {makeGetRequest} from "./makeGetRequest";
+
 type RoverResponse = {
     rovers: {name : string}[]
 }
 
 const getRovers = async () : Promise<string[]> => {
-    const response = await fetch("https://api.nasa.gov/mars-photos/api/v1/rovers?api_key=DEMO_KEY");
+    const response = await makeGetRequest("rovers", []);
     const body = (await response.json() as RoverResponse);
 
     return body.rovers.map((entry) => entry.name);
