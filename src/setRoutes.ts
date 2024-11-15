@@ -1,12 +1,14 @@
 import getRovers from "./getRovers";
 import {Response, Router} from "express";
-import getPhoto from "./getPhoto";
+import getPhotos from "./getPhotos";
 import {NotFoundError} from "./server";
 
-const errorWithACat = (res: Response, errorCode: number) => {
+const errorWithACat = (res: Response, errorCode: number, message: string) => {
     res.status(errorCode).send(
-        `<html>
-            <img src="https://http.cat/${errorCode}">
+        `<html lang="en">
+            <img src="https://http.cat/${errorCode}" alt="Error ${errorCode} triggered">
+            <br/>
+            ${message}
         </html>`
     );
 }
@@ -21,12 +23,14 @@ const setRoutes = (router : Router) => {
         let result;
 
         try {
-            result = await getPhoto("Curiosity", "FHAZ")
+            result = await getPhotos("curiosity", "FHAZ")
         } catch (error) {
             if (error instanceof NotFoundError) {
-                errorWithACat(res, 404);
+                errorWithACat(res, 404, error.message);
+            } else if (error instanceof Error) {
+                errorWithACat(res, 500, error.message);
             } else {
-                errorWithACat(res, 500);
+                errorWithACat(res, 500, 'Unknown Error :(')
             }
             return;
         }
@@ -38,19 +42,21 @@ const setRoutes = (router : Router) => {
         const { roverName, cameraType } = req.params;
 
         if (!roverName || !cameraType) {
-            errorWithACat(res, 400);
+            errorWithACat(res, 400, 'Provide both the roverName and cameraType');
             return;
         }
 
         let result;
 
         try {
-            result = await getPhoto(roverName, cameraType)
+            result = await getPhotos(roverName.toLowerCase(), cameraType.toUpperCase());
         } catch (error) {
             if (error instanceof NotFoundError) {
-                errorWithACat(res, 404);
+                errorWithACat(res, 404, error.message);
+            } else if (error instanceof Error) {
+                errorWithACat(res, 500, error.message);
             } else {
-                errorWithACat(res, 500);
+                errorWithACat(res, 500, 'Unknown Error :(')
             }
             return;
         }
