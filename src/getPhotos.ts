@@ -4,7 +4,7 @@ import {NotFoundError} from "./server";
 
 export type PhotoEntry = { url: string, earth_date: string }
 
-const getPhotos = async (rover: string, camera: string) : Promise<PhotoEntry[]> => {
+const getPhotos = async (rover: string, camera: string, sol: number = 100) : Promise<PhotoEntry[]> => {
     let {rovers} = MarsCameraManager.getInstance().getCameraDetails(camera);
 
     if (!rovers.includes(rover)) {
