@@ -15,10 +15,6 @@ const errorWithACat = (res: Response, errorCode: number, message: string) => {
 
 const setRoutes = (router : Router) => {
 
-    router.get('/test', (req, res) => {
-        res.send('Hello world !')
-    });
-
     router.get('/rovers/photos', async (req, res) => {
         let result;
 
@@ -33,6 +29,10 @@ const setRoutes = (router : Router) => {
                 errorWithACat(res, 500, 'Unknown Error :(')
             }
             return;
+        }
+
+        if (result.length === 0) {
+            return errorWithACat(res, 204, 'No content, try a different camera!')
         }
 
         res.send(result)
@@ -59,6 +59,10 @@ const setRoutes = (router : Router) => {
                 errorWithACat(res, 500, 'Unknown Error :(')
             }
             return;
+        }
+
+        if (result.length === 0) {
+            return errorWithACat(res, 204, 'No content, try a different camera!')
         }
 
         res.send(result)
