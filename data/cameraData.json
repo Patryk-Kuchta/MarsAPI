@@ -1,0 +1,38 @@
+{
+  "FHAZ": {
+    "name": "Front Hazard Avoidance Camera",
+    "rovers": ["curiosity", "opportunity", "spirit"]
+  },
+  "RHAZ": {
+    "name": "Rear Hazard Avoidance Camera",
+    "rovers": ["curiosity", "opportunity", "spirit"]
+  },
+  "MAST": {
+    "name": "Mast Camera",
+    "rovers": ["curiosity"]
+  },
+  "CHEMCAM": {
+    "name": "Chemistry and Camera Complex",
+    "rovers": ["curiosity"]
+  },
+  "MAHLI": {
+    "name": "Mars Hand Lens Imager",
+    "rovers": ["curiosity"]
+  },
+  "MARDI": {
+    "name": "Mars Descent Imager",
+    "rovers": ["curiosity"]
+  },
+  "NAVCAM": {
+    "name": "Navigation Camera",
+    "rovers": ["curiosity", "opportunity", "spirit"]
+  },
+  "PANCAM": {
+    "name": "Panoramic Camera",
+    "rovers": ["opportunity", "spirit"]
+  },
+  "MINITES": {
+    "name": "Miniature Thermal Emission Spectrometer",
+    "rovers": ["opportunity", "spirit"]
+  }
+}
