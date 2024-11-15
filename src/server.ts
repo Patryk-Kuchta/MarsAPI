@@ -1,5 +1,8 @@
 import express from "express";
 import setRoutes from "./setRoutes";
+import dotenv from 'dotenv';
+
+dotenv.config();
 
 const app = express();
 const port = 8000;

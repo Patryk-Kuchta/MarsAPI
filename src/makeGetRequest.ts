@@ -4,8 +4,6 @@ type GetParameters = {
 }[]
 
 const validateEnvVars = () => {
-    console.log(process.env)
-
     if (!process.env.BASE_URL || !process.env.API_KEY) {
         throw new Error('Required environment variables are not set');
     }
