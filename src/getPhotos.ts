@@ -2,7 +2,9 @@ import {MarsCameraManager} from "./cameraManager";
 import {makeGetRequest} from "./makeGetRequest";
 import {NotFoundError} from "./server";
 
-const getPhotos = async (rover: string, camera: string) : Promise<string[]> => {
+export type PhotoEntry = { url: string, earth_date: string }
+
+const getPhotos = async (rover: string, camera: string) : Promise<PhotoEntry[]> => {
     let {rovers} = MarsCameraManager.getInstance().getCameraDetails(camera);
 
     if (!rovers.includes(rover)) {
@@ -14,7 +16,15 @@ const getPhotos = async (rover: string, camera: string) : Promise<string[]> => {
         sol: "100"
     });
 
-    return results.data.photos.map((entry : {img_src: string}) => entry.img_src);
+    return results.data.photos.map((entry : {
+        img_src: string,
+        earth_date: string,
+    }) => {
+        return {
+            url: entry.img_src,
+            earth_date: entry.earth_date
+        }
+    });
 }
 
 export default getPhotos;

@@ -1,6 +1,6 @@
 import getRovers from "./getRovers";
 import {Response, Router} from "express";
-import getPhotos from "./getPhotos";
+import getPhotos, {PhotoEntry} from "./getPhotos";
 import {NotFoundError} from "./server";
 
 const handleError = (res: Response, error: any) => {
@@ -50,7 +50,7 @@ const setRoutes = (router : Router) => {
             return;
         }
 
-        let result;
+        let result : PhotoEntry[];
 
         try {
             result = await getPhotos(roverName.toLowerCase(), cameraType.toUpperCase());
