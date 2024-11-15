@@ -2,6 +2,8 @@ import express from "express";
 import setRoutes from "./setRoutes";
 import dotenv from 'dotenv';
 
+export class NotFoundError extends Error {}
+
 const validateEnvVars = () => {
     if (!process.env.BASE_URL || !process.env.API_KEY) {
         throw new Error('Required environment variables are not set');
