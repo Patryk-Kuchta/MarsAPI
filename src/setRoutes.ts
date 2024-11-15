@@ -37,7 +37,13 @@ const sendPhotosResponse = async (res: Response, roverName: string, cameraType: 
         return errorWithACat(res, 404, 'No photos found for the specified rover and camera on that day.');
     }
 
-    res.send(result);
+    res.send({
+        input: {
+          rover: roverName,
+          cameraType: cameraType,
+        },
+        photos: result,
+    });
 };
 
 
