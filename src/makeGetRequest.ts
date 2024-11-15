@@ -17,13 +17,16 @@ const validateParams = (params: GetParameters) => {
     });
 };
 
-const makeGetRequest = (route : string, params : GetParameters) => {
+const makeGetRequest = (route : string, params? : GetParameters) => {
     validateEnvVars();
-    validateParams(params);
+    let paramsArray : string[] = [];
+    if(params) {
+        validateParams(params);
 
-    const paramsArray = params.map(({key, value}) => {
-        return encodeURI(key) + '=' + encodeURI(value);
-    });
+        paramsArray = params.map(({key, value}) => {
+            return encodeURI(key) + '=' + encodeURI(value);
+        });
+    }
 
     paramsArray.push(`api_key=${process.env.API_KEY}`)
 
