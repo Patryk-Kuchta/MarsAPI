@@ -23,47 +23,38 @@ const errorWithACat = (res: Response, errorCode: number, message: string) => {
     );
 }
 
-const setRoutes = (router : Router) => {
+const sendPhotosResponse = async (res: Response, roverName: string, cameraType: string) => {
+    let result: PhotoEntry[];
+    try {
+        result = await getPhotos(roverName.toLowerCase(), cameraType.toUpperCase());
+    } catch (error) {
+        handleError(res, error);
+        return;
+    }
+
+    if (result.length === 0) {
+        return errorWithACat(res, 404, 'No photos found for the specified rover and camera.');
+    }
+
+    res.send(result);
+};
+
+
+const setRoutes = (router: Router) => {
 
     router.get('/rovers/photos', async (req, res) => {
-        let result;
-
-        try {
-            result = await getPhotos("curiosity", "FHAZ")
-        } catch (error) {
-            handleError(res, error);
-            return;
-        }
-
-        if (result.length === 0) {
-            return errorWithACat(res, 204, 'No content, try a different camera!')
-        }
-
-        res.send(result)
+        await sendPhotosResponse(res, "curiosity", "FHAZ")
     })
 
     router.get('/rovers/:roverName/photos/:cameraType', async (req, res) => {
-        const { roverName, cameraType } = req.params;
+        const {roverName, cameraType} = req.params;
 
         if (!roverName || !cameraType) {
             errorWithACat(res, 400, 'Provide both the roverName and cameraType');
             return;
         }
 
-        let result : PhotoEntry[];
-
-        try {
-            result = await getPhotos(roverName.toLowerCase(), cameraType.toUpperCase());
-        } catch (error) {
-            handleError(res, error);
-            return;
-        }
-
-        if (result.length === 0) {
-            return errorWithACat(res, 204, 'No content, try a different camera!')
-        }
-
-        res.send(result)
+        await sendPhotosResponse(res, roverName.toLowerCase(), cameraType.toUpperCase())
     })
 
     router.get('/rovers', async (req, res) => {
