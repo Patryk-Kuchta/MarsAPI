@@ -43,6 +43,24 @@ class MarsCameraManager {
             rovers: details.rovers
         };
     }
+
+    public getRandomCameraRoverCombo(): { cameraAbbreviation: CameraAbbreviation; cameraName: string; rover: string } {
+        const cameraAbbreviations = Array.from(this.cameras.keys());
+        const randomCameraAbbreviation = cameraAbbreviations[Math.floor(Math.random() * cameraAbbreviations.length)];
+        const cameraDetails = this.cameras.get(randomCameraAbbreviation);
+
+        if (!cameraDetails) {
+            throw new Error('Camera details not found.');
+        }
+
+        const randomRover = cameraDetails.rovers[Math.floor(Math.random() * cameraDetails.rovers.length)];
+
+        return {
+            cameraAbbreviation: randomCameraAbbreviation,
+            cameraName: cameraDetails.name,
+            rover: randomRover
+        };
+    }
 }
 
 export { MarsCameraManager, CameraAbbreviation };

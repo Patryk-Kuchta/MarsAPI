@@ -2,6 +2,7 @@ import getRovers from "./getRovers";
 import {Response, Router} from "express";
 import getPhotos, {PhotoEntry} from "./getPhotos";
 import {NotFoundError} from "./server";
+import {MarsCameraManager} from "./cameraManager";
 
 const handleError = (res: Response, error: any) => {
     if (error instanceof NotFoundError) {
@@ -33,7 +34,7 @@ const sendPhotosResponse = async (res: Response, roverName: string, cameraType: 
     }
 
     if (result.length === 0) {
-        return errorWithACat(res, 404, 'No photos found for the specified rover and camera.');
+        return errorWithACat(res, 404, 'No photos found for the specified rover and camera on that day.');
     }
 
     res.send(result);
@@ -43,7 +44,9 @@ const sendPhotosResponse = async (res: Response, roverName: string, cameraType: 
 const setRoutes = (router: Router) => {
 
     router.get('/rovers/photos', async (req, res) => {
-        await sendPhotosResponse(res, "curiosity", "FHAZ")
+        const randomCombo = MarsCameraManager.getInstance().getRandomCameraRoverCombo();
+
+        await sendPhotosResponse(res, randomCombo.rover, randomCombo.cameraAbbreviation)
     })
 
     router.get('/rovers/:roverName/photos/:cameraType', async (req, res) => {
