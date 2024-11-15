@@ -24,10 +24,10 @@ class MarsCameraManager {
     }
 
     public static getInstance(): MarsCameraManager {
-        if (!this.instance) {
-            this.instance = new MarsCameraManager();
+        if (!MarsCameraManager.instance) {
+            MarsCameraManager.instance = new MarsCameraManager();
         }
-        return this.instance;
+        return MarsCameraManager.instance;
     }
 
     public getCameraDetails(abbreviation: string): { abbreviation: CameraAbbreviation; name: string; rovers: string[] } {
