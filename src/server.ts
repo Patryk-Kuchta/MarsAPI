@@ -1,5 +1,5 @@
 import express from "express";
-import getRovers from "./getRovers";
+import setRoutes from "./setRoutes";
 
 const app = express();
 const port = 8000;
@@ -7,12 +7,7 @@ const port = 8000;
 app.use(express.json());
 const router = express.Router();
 
-router.get('/test', (req, res) => {
-    res.send('Hello world !')
-});
-router.get('/rovers', async (req, res) => {
-    res.send(await getRovers())
-});
+setRoutes(router);
 
 app.use('/', router);
 
