@@ -6,7 +6,7 @@ type RoverResponse = {
 
 const getRovers = async () : Promise<string[]> => {
     const response = await makeGetRequest("rovers");
-    const body = (await response.json() as RoverResponse);
+    const body = (response.data as RoverResponse);
 
     return body.rovers.map((entry) => entry.name);
 }

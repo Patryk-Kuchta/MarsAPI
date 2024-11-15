@@ -1,7 +1,4 @@
-type GetParameters = {
-    key: string;
-    value: string;
-}[]
+import axios from "axios";
 
 const validateEnvVars = () => {
     if (!process.env.BASE_URL || !process.env.API_KEY) {
@@ -9,26 +6,16 @@ const validateEnvVars = () => {
     }
 };
 
-const validateParams = (params: GetParameters) => {
-    return params.every(({key, value}) => {
-        return key.trim() !== '' && value.trim() !== '';
-    });
-};
-
-const makeGetRequest = (route : string, params? : GetParameters) => {
+const makeGetRequest = (route: string, params?: Record<string, string>) => {
     validateEnvVars();
-    let paramsArray : string[] = [];
-    if(params) {
-        validateParams(params);
 
-        paramsArray = params.map(({key, value}) => {
-            return encodeURI(key) + '=' + encodeURI(value);
-        });
+    if (!params) {
+        params = { api_key: process.env.API_KEY! };
+    } else {
+        params.api_key = process.env.API_KEY!;
     }
 
-    paramsArray.push(`api_key=${process.env.API_KEY}`)
-
-    return fetch(`${process.env.BASE_URL}/${route}?${paramsArray.join('&')}`)
-}
+    return axios.get(`${process.env.BASE_URL}/${route}`, { params });
+};
 
 export { makeGetRequest, validateEnvVars };
