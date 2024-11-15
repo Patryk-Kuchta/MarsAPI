@@ -3,6 +3,16 @@ import {Response, Router} from "express";
 import getPhotos from "./getPhotos";
 import {NotFoundError} from "./server";
 
+const handleError = (res: Response, error: any) => {
+    if (error instanceof NotFoundError) {
+        errorWithACat(res, 404, error.message);
+    } else if (error instanceof Error) {
+        errorWithACat(res, 500, error.message);
+    } else {
+        errorWithACat(res, 500, 'Unknown Error :(');
+    }
+}
+
 const errorWithACat = (res: Response, errorCode: number, message: string) => {
     res.status(errorCode).send(
         `<html lang="en">
@@ -21,13 +31,7 @@ const setRoutes = (router : Router) => {
         try {
             result = await getPhotos("curiosity", "FHAZ")
         } catch (error) {
-            if (error instanceof NotFoundError) {
-                errorWithACat(res, 404, error.message);
-            } else if (error instanceof Error) {
-                errorWithACat(res, 500, error.message);
-            } else {
-                errorWithACat(res, 500, 'Unknown Error :(')
-            }
+            handleError(res, error);
             return;
         }
 
@@ -51,13 +55,7 @@ const setRoutes = (router : Router) => {
         try {
             result = await getPhotos(roverName.toLowerCase(), cameraType.toUpperCase());
         } catch (error) {
-            if (error instanceof NotFoundError) {
-                errorWithACat(res, 404, error.message);
-            } else if (error instanceof Error) {
-                errorWithACat(res, 500, error.message);
-            } else {
-                errorWithACat(res, 500, 'Unknown Error :(')
-            }
+            handleError(res, error);
             return;
         }
 
