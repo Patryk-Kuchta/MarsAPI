@@ -13,8 +13,12 @@ const getPhotos = async (rover: string, camera: string) : Promise<PhotoEntry[]> 
 
     const results = await makeGetRequest(`rovers/${rover}/photos`, {
         camera: camera,
-        sol: "100"
+        sol: sol.toString()
     });
+
+    if (!results?.data?.photos) {
+        throw new Error('Invalid response format from API');
+    }
 
     return results.data.photos.map((entry : {
         img_src: string,
